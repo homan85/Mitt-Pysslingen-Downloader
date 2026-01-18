@@ -2,6 +2,8 @@
 
 Ett fristående och inofficiellt verktyg för nedladdning av media som laddats upp till Mitt Pysslingen.
 
+Ladda ner för [Windows](https://github.com/homan85/Mitt-Pysslingen-Downloader/releases/download/V1/MittPysslingenDownloader-Windows.exe) eller [macOS](https://github.com/homan85/Mitt-Pysslingen-Downloader/releases/download/V1/MittPysslingenDownloader-macOS.zip)
+
 ## macOS
 
 macOS kan visa en säkerhetsvarning första gången du kör Mitt Pysslingen Downloader.  
