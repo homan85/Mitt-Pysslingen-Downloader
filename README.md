@@ -29,7 +29,7 @@ Apple kräver att appar som laddas ner från internet ska vara:
 1. signerade med Apple Developer ID
 2. notariserade av Apple
 
-Då denna app är en hobbyprojekt och distribueras utan Apple Developer-konto, visas dessa säkerhetsvarningar på macOS.
+Då detta är ett hobbyprojekt som distribueras utan Apple Developer-konto, visas dessa säkerhetsvarningar på macOS.
 
 ## Viktig information
 Detta projekt har **ingen koppling till**, och är **inte utvecklat, godkänt, sponsrat eller stödd av**
