@@ -1,6 +1,8 @@
 # Mitt Pysslingen Downloader
 
-Ett fristående och inofficiellt verktyg för nedladdning av media som laddats upp till Mitt Pysslingen.
+### Ett fristående och inofficiellt verktyg för nedladdning av media som laddats upp till Mitt Pysslingen.<br>
+Material som finns i Mitt Pysslingen sparas inte alltid efter att barnet slutat på förskolan.<br>
+Med **_Mitt Pysslingen Downloader_** kan du ladda ner och spara media som rör ditt barn, så att du kan behålla minnena för framtiden.
 
 Ladda ner för 
 <br>[Windows](https://github.com/homan85/Mitt-Pysslingen-Downloader/releases/download/1.0.0/Mitt.Pysslingen.Downloader-Windows.exe)
