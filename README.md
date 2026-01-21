@@ -2,7 +2,10 @@
 
 Ett fristående och inofficiellt verktyg för nedladdning av media som laddats upp till Mitt Pysslingen.
 
-Ladda ner för [Windows](https://github.com/homan85/Mitt-Pysslingen-Downloader/releases/download/1.0.0/Mitt.Pysslingen.Downloader-Windows.exe), [macOS (Apple Silicon)](https://github.com/homan85/Mitt-Pysslingen-Downloader/releases/download/1.0.0/Mitt.Pysslingen.Downloader-macOS.Apple.Silicon.zip) eller [macOS (Intel)](https://github.com/homan85/Mitt-Pysslingen-Downloader/releases/download/1.0.0/Mitt.Pysslingen.Downloader-macOS.Intel.zip)
+Ladda ner för 
+<br>[Windows](https://github.com/homan85/Mitt-Pysslingen-Downloader/releases/download/1.0.0/Mitt.Pysslingen.Downloader-Windows.exe)
+<br>[macOS (Apple Silicon)](https://github.com/homan85/Mitt-Pysslingen-Downloader/releases/download/1.0.0/MittPysslingenDownloader-macOS.Apple.Silicon.zip)
+<br>[macOS (Intel)](https://github.com/homan85/Mitt-Pysslingen-Downloader/releases/download/1.0.0/MittPysslingenDownloader-macOS.Intel.zip)
 
 # Så här ser applikationen ut
 ### Windows
@@ -17,23 +20,17 @@ Ladda ner för [Windows](https://github.com/homan85/Mitt-Pysslingen-Downloader/r
 ## Viktigt gällande macOS
 
 macOS kan visa en säkerhetsvarning första gången du kör Mitt Pysslingen Downloader.  
-Detta beror på att applikationen inte är signerad med ett Apple Developer-konto.
+Detta är ett säkerhetsskydd i macOS och betyder **inte** att applikationen faktiskt är skadad.
 
 ### Om macOS säger att appen är “skadad”
 
-Detta är ett säkerhetsskydd i macOS och betyder **inte** att applikationen faktiskt är skadad.
-
-Om detta inträffar:
-
 1. Öppna **Terminal**
 2. Kör följande kommando (anpassa sökvägen om applikationen ligger på annan plats):
-
 ```bash
 sudo xattr -rd com.apple.quarantine /Applications/Mitt\ Pysslingen\ Downloader.app
 
 ```
-
-Starta appen igen
+3. Starta appen igen
 
 ### Varför händer detta?
 
@@ -45,14 +42,12 @@ Då detta är ett hobbyprojekt som distribueras utan Apple Developer-konto, visa
 
 ## Viktig information
 
-_I Demo-läget är nedladdning av meddelanden och video spärrade och endast ett inlägg laddas ner. Allt som laddas ner har vattenstämpel._
-
+_I Demo-läget är nedladdning av meddelanden och video spärrade och endast ett inlägg laddas ner. Allt som laddas ner har vattenstämpel._<br>
 _Vid köp av licens för 50kr tas dessa begränsningar bort._
 
 <sub>Detta projekt har **ingen koppling till**, och är **inte utvecklat, godkänt, sponsrat eller stödd av**
 **AcadeMedia** eller **Pysslingen Förskolor**.
 Namnet “Pysslingen” används enbart för att beskriva applikationens funktion och innebär ingen
-association eller godkännande från varumärkesägaren.</sub>
-
+association eller godkännande från varumärkesägaren.</sub><br>
 <sub>Applikationen tillhandahålls i befintligt skick (“as is”), utan några garantier eller utfästelser, vare sig uttryckliga eller underförstådda.</sub>
 <sub>Användning av applikationen sker på eget ansvar. Utvecklaren ansvarar inte för eventuell dataförlust, felaktig funktion eller andra konsekvenser som kan uppstå vid användning av programmet.</sub>
