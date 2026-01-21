@@ -2,7 +2,7 @@
 
 Ett fristående och inofficiellt verktyg för nedladdning av media som laddats upp till Mitt Pysslingen.
 
-Ladda ner för [Windows](https://github.com/homan85/Mitt-Pysslingen-Downloader/releases/download/v1.0.1/Mitt.Pysslingen.Downloader-Windows.exe), [macOS (Apple Silicon)](https://github.com/homan85/Mitt-Pysslingen-Downloader/releases/download/v1.0.1/Mitt.Pysslingen.Downloader-macOS.zip) eller [macOS (Intel)](https://github.com/homan85/Mitt-Pysslingen-Downloader/releases/download/v1.0.1/Mitt.Pysslingen.Downloader-macOS.zip)
+Ladda ner för [Windows](https://github.com/homan85/Mitt-Pysslingen-Downloader/releases/download/1.0.0/Mitt.Pysslingen.Downloader-Windows.exe), [macOS (Apple Silicon)](https://github.com/homan85/Mitt-Pysslingen-Downloader/releases/download/1.0.0/Mitt.Pysslingen.Downloader-macOS.Apple.Silicon.zip) eller [macOS (Intel)](https://github.com/homan85/Mitt-Pysslingen-Downloader/releases/download/1.0.0/Mitt.Pysslingen.Downloader-macOS.Intel.zip)
 
 # Så här ser applikationen ut
 ### Windows
