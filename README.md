@@ -13,10 +13,10 @@ Med **Mitt Pysslingen Downloader** kan du ladda ner och spara bilder, filmer och
   👉 [Mitt Pysslingen Downloader.exe](https://github.com/homan85/Mitt-Pysslingen-Downloader/releases/download/1.0.0/Mitt.Pysslingen.Downloader-Windows.exe)
   
 - **macOS (Apple Silicon)**  
-  👉 [Mitt Pysslingen Downloader.dmg](https://github.com/homan85/Mitt-Pysslingen-Downloader/releases/download/1.0.0/MittPysslingenDownloader-macOS.Apple.Silicon.zip)
+  👉 [Mitt Pysslingen Downloader.zip](https://github.com/homan85/Mitt-Pysslingen-Downloader/releases/download/1.0.0/MittPysslingenDownloader-macOS.Apple.Silicon.zip)
   
 - **macOS (Intel)**  
-  👉 [Mitt Pysslingen Downloader.dmg](https://github.com/homan85/Mitt-Pysslingen-Downloader/releases/download/1.0.0/MittPysslingenDownloader-macOS.Intel.zip)
+  👉 [Mitt Pysslingen Downloader.zip](https://github.com/homan85/Mitt-Pysslingen-Downloader/releases/download/1.0.0/MittPysslingenDownloader-macOS.Intel.zip)
 
 ---
 
