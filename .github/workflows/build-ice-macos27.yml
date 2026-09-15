@@ -1,0 +1,209 @@
+name: Build patched Ice for macOS 27
+
+on:
+  push:
+    branches:
+      - build-ice-macos27
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Select latest Xcode
+        run: |
+          LATEST=$(ls -d /Applications/Xcode_*.app 2>/dev/null | sort -V | tail -1)
+          if [ -n "$LATEST" ]; then
+            sudo xcode-select -s "$LATEST"
+          fi
+          xcodebuild -version
+
+      - name: Clone Ice
+        run: |
+          git clone --depth 1 https://github.com/cavaldos/Ice.git Ice-src
+          cd Ice-src
+          git rev-parse HEAD
+
+      - name: Apply macOS 27 multi-spacer fix
+        working-directory: Ice-src
+        run: |
+          git apply - <<'PATCH'
+          diff --git a/Ice/MenuBar/ControlItem/ControlItem.swift b/Ice/MenuBar/ControlItem/ControlItem.swift
+          --- a/Ice/MenuBar/ControlItem/ControlItem.swift
+          +++ b/Ice/MenuBar/ControlItem/ControlItem.swift
+          @@ -69,6 +69,10 @@ final class ControlItem {
+               /// The control item's underlying status item.
+               private let statusItem: NSStatusItem
+           
+          +    /// Extra invisible status items used on macOS 27 to push hidden
+          +    /// sections fully out of the visible status region.
+          +    private var spacerItems = [NSStatusItem]()
+          +
+               /// A horizontal constraint for the control item's content view.
+               private let constraint: NSLayoutConstraint?
+           
+          @@ -157,6 +161,10 @@ final class ControlItem {
+           
+               /// Removes the status item without clearing its stored position.
+               deinit {
+          +        for item in spacerItems {
+          +            NSStatusBar.system.removeStatusItem(item)
+          +        }
+          +
+                   // Removing the status item has the unwanted side effect of deleting
+                   // the preferredPosition. Cache and restore it.
+                   let autosaveName = statusItem.autosaveName as String
+          @@ -187,7 +195,13 @@ final class ControlItem {
+                                   case .showItems: Lengths.standard
+                                   }
+                               }
+          +
+          +                    let shouldUseSpacers = section.name != .visible && state == .hideItems
+          +                    updateSpacerItems(forHiddenState: shouldUseSpacers)
+          +
+                               constraint?.isActive = true
+                           } else {
+          +                    updateSpacerItems(forHiddenState: false)
+                               statusItem.length = 0
+                               constraint?.isActive = false
+                               if let window {
+          @@ -245,6 +259,20 @@ final class ControlItem {
+                       }
+                       .store(in: &c)
+           
+          +        NotificationCenter.default
+          +            .publisher(for: NSApplication.didChangeScreenParametersNotification)
+          +            .receive(on: DispatchQueue.main)
+          +            .sink { [weak self] _ in
+          +                guard
+          +                    let self,
+          +                    isSectionDivider,
+          +                    isAddedToMenuBar,
+          +                    isVisible,
+          +                    state == .hideItems
+          +                else {
+          +                    return
+          +                }
+          +                statusItem.length = expandedHidingLength()
+          +                updateSpacerItems(forHiddenState: true)
+          +            }
+          +            .store(in: &c)
+          +
+                   if let appState {
+                       appState.settingsManager.generalSettingsManager.$showIceIcon
+                           .receive(on: DispatchQueue.main)
+          @@ -386,6 +414,74 @@ final class ControlItem {
+                   }
+               }
+           
+          +    /// Adds or removes additional hiding spacers on macOS 27.
+          +    ///
+          +    /// macOS 27 discards a single status item whose width is larger than the
+          +    /// native status region. `expandedHidingLength()` therefore keeps every
+          +    /// individual spacer inside that limit, while this method chains enough
+          +    /// spacers to recreate the effective off-screen push of the old 10,000 pt
+          +    /// spacer.
+          +    private func updateSpacerItems(forHiddenState isHiddenState: Bool) {
+          +        guard
+          +            #available(macOS 27, *),
+          +            identifier != .iceIcon,
+          +            isHiddenState
+          +        else {
+          +            removeSpacerItems()
+          +            return
+          +        }
+          +
+          +        let spacerLength = expandedHidingLength()
+          +        guard spacerLength.isFinite, spacerLength > 0 else {
+          +            removeSpacerItems()
+          +            return
+          +        }
+          +
+          +        let needed = requiredSpacerCount(for: spacerLength)
+          +
+          +        if spacerItems.count != needed {
+          +            removeSpacerItems()
+          +
+          +            spacerItems = (0 ..< needed).map { index in
+          +                // Seed with a tiny non-zero width so AppKit materializes the
+          +                // status item before the final hiding width is applied.
+          +                let item = NSStatusBar.system.statusItem(withLength: 1)
+          +                item.autosaveName = "\(identifier.rawValue).macOS27Spacer.\(index)"
+          +
+          +                if let button = item.button {
+          +                    button.title = ""
+          +                    button.image = nil
+          +                    button.isEnabled = false
+          +                    button.appearsDisabled = true
+          +                    button.alphaValue = 0
+          +                }
+          +
+          +                return item
+          +            }
+          +        }
+          +
+          +        spacerItems.forEach { $0.length = spacerLength }
+          +    }
+          +
+          +    /// Removes all additional hiding spacers.
+          +    private func removeSpacerItems() {
+          +        for item in spacerItems {
+          +            NSStatusBar.system.removeStatusItem(item)
+          +        }
+          +        spacerItems.removeAll()
+          +    }
+          +
+          +    /// Calculates how many additional macOS 27 spacers are needed.
+          +    ///
+          +    /// The main control item already contributes one `spacerLength`, so only
+          +    /// the remaining target width is represented by `spacerItems`.
+          +    private func requiredSpacerCount(for spacerLength: CGFloat) -> Int {
+          +        let maxScreenWidth = NSScreen.screens.map(\.frame.width).max()
+          +            ?? window?.screen?.frame.width
+          +            ?? 0
+          +
+          +        guard maxScreenWidth > 0 else {
+          +            return 0
+          +        }
+          +
+          +        let desiredWidth = max(maxScreenWidth * 3, spacerLength)
+          +        let remainingWidth = desiredWidth - spacerLength
+          +        guard remainingWidth > 0 else {
+          +            return 0
+          +        }
+          +
+          +        return min(32, Int(ceil(remainingWidth / spacerLength)))
+          +    }
+          +
+               /// Performs the control item's action.
+               @objc private func performAction() {
+                   guard
+          PATCH
+
+      - name: Build Ice.app
+        working-directory: Ice-src
+        run: |
+          xcodebuild -project Ice.xcodeproj -scheme Ice -configuration Release \
+            -destination 'platform=macOS,arch=arm64' \
+            CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY=- DEVELOPMENT_TEAM= \
+            clean build
+
+          BUILD_DIR=$(xcodebuild -project Ice.xcodeproj -scheme Ice -configuration Release \
+            -destination 'platform=macOS,arch=arm64' \
+            CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY=- DEVELOPMENT_TEAM= \
+            -showBuildSettings 2>/dev/null \
+            | sed -n 's/^ *BUILT_PRODUCTS_DIR *= *//p' | head -1)
+
+          test -d "$BUILD_DIR/Ice.app"
+          codesign --force --deep --sign - "$BUILD_DIR/Ice.app"
+          ditto -c -k --keepParent "$BUILD_DIR/Ice.app" "$GITHUB_WORKSPACE/Ice-macOS27-patched.zip"
+
+      - name: Upload Ice.app
+        uses: actions/upload-artifact@v4
+        with:
+          name: Ice-macOS27-patched
+          path: Ice-macOS27-patched.zip
+          if-no-files-found: error
+          retention-days: 7
